@@ -1,10 +1,29 @@
 import logo from './logo.svg';
 import './App.css';
-import {useCallback, useState} from "react";
+import React, {useCallback, useState} from "react";
 import axios from "axios";
+import {Button, makeStyles} from "@material-ui/core";
+
 
 function App() {
-    const [responseData, setResponseData] = useState(['Here comes info']);
+    const useStyles = makeStyles((theme) => ({
+        root: {
+            flexGrow: 1,
+        },
+        paper: {
+            height: 140,
+            width: 100,
+        },
+        control: {
+            padding: theme.spacing(2),
+        },
+    }));
+    const [responseData, setResponseData] = useState('');
+    const [cases, setCases] = useState('');
+    const [deaths, setDeaths] = useState('');
+    const [time, setTime] = useState('');
+    const [newCases, setNewCases] = useState('');
+    const [newDeaths, setNewDeaths] = useState('');
     const options = {
         method: 'GET',
         url: 'https://covid-193.p.rapidapi.com/statistics',
@@ -18,23 +37,44 @@ function App() {
         axios(options)
 
             .then((response) => {
-                console.log(response)
-                setResponseData(response.data)
+                console.log(response);
+                setResponseData(response.data.response[0]);
+                setCases(response.data.response[0].cases);
+                setDeaths(response.data.response[0].deaths);
+                setTime(response.data.response[0].time);
+                setNewCases(response.data.response[0].new);
+                setNewDeaths(response.data.response[0].new);
             })
             .catch((error) => {
                 console.log(error)
             })
-    }, [])
+    }, [options])
+    console.log(responseData);
+    console.log(Date(time));
+    console.log(cases.["1M_pop"]);
+    console.log(deaths.total);
+    console.log(cases.new);
+    console.log(deaths.new);
     return (
         <div className="App">
             <header className="App-header">
                 <img src={logo} className="App-logo" alt="logo"/>
-                <button type='button' onClick={fetchData}> STATISTICS FOR ESTONIA
-                </button>
-
-                {JSON.stringify(responseData.data)}
-
+                <Button variant='contained'
+                        color='primary'
+                        disableElevation type='button'
+                        onClick={fetchData}> COVID 19
+                    IN ESTONIA
+                </Button>
+                <ul>
+                    <p>Last update: {responseData && Date(time)} </p>
+                    <p>Cases per 1M capita: {cases && cases.['1M_pop']} persons</p>
+                    <p>Total deaths: {deaths && deaths.total} persons </p>
+                    <p>Active cases: {cases && cases.active} persons </p>
+                    <p>New cases in last 24h: {cases && cases.new} persons </p>
+                    <p>New deaths in last 24h: {deaths && deaths.new} persons </p>
+                </ul>
             </header>
+
         </div>
     );
 }
