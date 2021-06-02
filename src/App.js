@@ -2,28 +2,34 @@ import logo from './logo.svg';
 import './App.css';
 import React, {useCallback, useState} from "react";
 import axios from "axios";
-import {Button, makeStyles} from "@material-ui/core";
+import {Button, CardContent, CardHeader, ListItem, ListItemText, Typography} from "@material-ui/core";
+import {makeStyles} from "@material-ui/core";
+import {AppBar} from "@material-ui/core";
+import {Card} from "@material-ui/core";
 
+const useStyles = makeStyles({
+    textStyle: {
+        fontStyle: 'oblique',
+        color: 'ivory',
+        fontSize: '-moz-initial',
+        fontFamily: 'inherit'
+    },
+    buttonStyles: {
+        color: 'red',
+        background: 'aliceblue',
+        border: '0'
+    }, cardStyle: {
+        color: 'green',
+        background: 'azure'
+    }
+});
 
 function App() {
-    const useStyles = makeStyles((theme) => ({
-        root: {
-            flexGrow: 1,
-        },
-        paper: {
-            height: 140,
-            width: 100,
-        },
-        control: {
-            padding: theme.spacing(2),
-        },
-    }));
+    const classes = useStyles();
     const [responseData, setResponseData] = useState('');
     const [cases, setCases] = useState('');
     const [deaths, setDeaths] = useState('');
-    const [time, setTime] = useState('');
-    const [newCases, setNewCases] = useState('');
-    const [newDeaths, setNewDeaths] = useState('');
+    const [day, setDay] = useState('');
     const options = {
         method: 'GET',
         url: 'https://covid-193.p.rapidapi.com/statistics',
@@ -41,38 +47,55 @@ function App() {
                 setResponseData(response.data.response[0]);
                 setCases(response.data.response[0].cases);
                 setDeaths(response.data.response[0].deaths);
-                setTime(response.data.response[0].time);
-                setNewCases(response.data.response[0].new);
-                setNewDeaths(response.data.response[0].new);
+                setDay(response.data.response[0].day);
             })
             .catch((error) => {
                 console.log(error)
             })
     }, [options])
     console.log(responseData);
-    console.log(Date(time));
+    console.log(responseData.day);
     console.log(cases.["1M_pop"]);
-    console.log(deaths.total);
-    console.log(cases.new);
+    console.log(cases.active);
     console.log(deaths.new);
+    console.log(deaths.total);
     return (
         <div className="App">
+            <AppBar position={'static'}>
+                <Typography variant={"h3"}>
+                    Covid-19 in Estonia
+                </Typography>
+            </AppBar>
             <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo"/>
-                <Button variant='contained'
-                        color='primary'
-                        disableElevation type='button'
-                        onClick={fetchData}> COVID 19
-                    IN ESTONIA
+
+                {/*<img src={logo} className="App-logo" alt="logo"/>*/}
+                <Button
+                    className={classes.buttonStyles}
+                    variant='outlined'
+                    color='inherit'
+                    disableElevation type='button'
+                    onClick={fetchData}> Fresh statistics
                 </Button>
-                <ul>
-                    <p>Last update: {responseData && Date(time)} </p>
-                    <p>Cases per 1M capita: {cases && cases.['1M_pop']} persons</p>
-                    <p>Total deaths: {deaths && deaths.total} persons </p>
-                    <p>Active cases: {cases && cases.active} persons </p>
-                    <p>New cases in last 24h: {cases && cases.new} persons </p>
-                    <p>New deaths in last 24h: {deaths && deaths.new} persons </p>
-                </ul>
+
+                <Typography
+                    align={'left'}
+                    color={'primary'}
+                    className={classes.textStyle}
+                >
+                    <Card>
+                        <CardHeader color={'blue'}>
+
+                        </CardHeader>
+                        <CardContent>
+                            <ListItem>New deaths in last 24h: {deaths && deaths.new} persons </ListItem>
+                            <ListItem>Total deaths: {deaths && deaths.total} persons </ListItem>
+                            <ListItem>New cases in last 24h: {cases && cases.new} persons </ListItem>
+                            <ListItem>Active cases: {cases && cases.active} persons </ListItem>
+                            <ListItem>Cases per 1M capita: {cases && cases.['1M_pop']} persons</ListItem>
+                            <ListItem> Statistics for: {day} </ListItem>
+                        </CardContent>
+                    </Card>
+                </Typography>
             </header>
 
         </div>
