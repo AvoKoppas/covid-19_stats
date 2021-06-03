@@ -2,7 +2,16 @@ import logo from './logo.svg';
 import './App.css';
 import React, {useCallback, useState} from "react";
 import axios from "axios";
-import {Button, CardContent, CardHeader, ListItem, ListItemText, Typography} from "@material-ui/core";
+import {
+    Avatar,
+    Button,
+    CardContent,
+    CardHeader, CardMedia,
+    ListItem,
+    ListItemAvatar,
+    ListItemText,
+    Typography
+} from "@material-ui/core";
 import {makeStyles} from "@material-ui/core";
 import {AppBar} from "@material-ui/core";
 import {Card} from "@material-ui/core";
@@ -83,9 +92,16 @@ function App() {
                     className={classes.textStyle}
                 >
                     <Card>
-                        <CardHeader color={'blue'}>
-
+                        <CardHeader
+                            avatar={
+                                <Avatar aria-label='recipe' className={classes.avatar}>
+                                    Est
+                                </Avatar>
+                            }>
                         </CardHeader>
+                        <CardMedia
+                            image='C:\Users\AvoOk\OneDrive\Pildid\covid project\Est'/>
+
                         <CardContent>
                             <ListItem>New deaths in last 24h: {deaths && deaths.new} persons </ListItem>
                             <ListItem>Total deaths: {deaths && deaths.total} persons </ListItem>
