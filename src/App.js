@@ -7,9 +7,7 @@ import {
     Button,
     CardContent,
     CardHeader, CardMedia,
-    ListItem,
-    ListItemAvatar,
-    ListItemText,
+    ListItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
     Typography
 } from "@material-ui/core";
 import {makeStyles} from "@material-ui/core";
@@ -68,6 +66,7 @@ function App() {
     console.log(cases.active);
     console.log(deaths.new);
     console.log(deaths.total);
+
     return (
         <div className="App">
             <AppBar position={'static'}>
@@ -76,7 +75,6 @@ function App() {
                 </Typography>
             </AppBar>
             <header className="App-header">
-
                 {/*<img src={logo} className="App-logo" alt="logo"/>*/}
                 <Button
                     className={classes.buttonStyles}
@@ -91,29 +89,14 @@ function App() {
                     color={'primary'}
                     className={classes.textStyle}
                 >
-                    <Card>
-                        <CardHeader
-                            avatar={
-                                <Avatar aria-label='recipe' className={classes.avatar}>
-                                    Est
-                                </Avatar>
-                            }>
-                        </CardHeader>
-                        <CardMedia
-                            image='C:\Users\AvoOk\OneDrive\Pildid\covid project\Est'/>
-
-                        <CardContent>
-                            <ListItem>New deaths in last 24h: {deaths && deaths.new} persons </ListItem>
-                            <ListItem>Total deaths: {deaths && deaths.total} persons </ListItem>
-                            <ListItem>New cases in last 24h: {cases && cases.new} persons </ListItem>
-                            <ListItem>Active cases: {cases && cases.active} persons </ListItem>
-                            <ListItem>Cases per 1M capita: {cases && cases.['1M_pop']} persons</ListItem>
-                            <ListItem> Statistics for: {day} </ListItem>
-                        </CardContent>
-                    </Card>
+                    <ListItem>New deaths in last 24h: {deaths && deaths.new} persons </ListItem>
+                    <ListItem>Total deaths: {deaths && deaths.total} persons </ListItem>
+                    <ListItem>New cases in last 24h: {cases && cases.new} persons </ListItem>
+                    <ListItem>Active cases: {cases && cases.active} persons </ListItem>
+                    <ListItem>Cases per 1M capita: {cases && cases.['1M_pop']} persons</ListItem>
+                    <ListItem> Statistics for: {day} </ListItem>
                 </Typography>
             </header>
-
         </div>
     );
 }
