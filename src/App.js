@@ -1,33 +1,30 @@
-import logo from './logo.svg';
 import './App.css';
 import React, {useCallback, useState} from "react";
 import axios from "axios";
 import {
-    Avatar,
-    Button,
-    CardContent,
-    CardHeader, CardMedia,
-    ListItem, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
+    Button, Card, CardContent,
     Typography
 } from "@material-ui/core";
 import {makeStyles} from "@material-ui/core";
 import {AppBar} from "@material-ui/core";
-import {Card} from "@material-ui/core";
+import logo from './Est.jpg'
 
 const useStyles = makeStyles({
     textStyle: {
-        fontStyle: 'oblique',
-        color: 'ivory',
-        fontSize: '-moz-initial',
-        fontFamily: 'inherit'
+        fontStyle: '-moz-initial',
+        color: 'black',
+        fontSize: 'large',
+        fontFamily: 'monospace',
     },
     buttonStyles: {
-        color: 'red',
-        background: 'aliceblue',
-        border: '0'
-    }, cardStyle: {
-        color: 'green',
-        background: 'azure'
+        color: 'white',
+        background: 'green',
+        border: '5'
+    },
+    cardStyle: {
+        background: 'aqua',
+        border: 'black',
+        borderStyle: 'ridge'
     }
 });
 
@@ -61,21 +58,18 @@ function App() {
             })
     }, [options])
     console.log(responseData);
-    console.log(responseData.day);
-    console.log(cases.["1M_pop"]);
-    console.log(cases.active);
-    console.log(deaths.new);
-    console.log(deaths.total);
 
     return (
         <div className="App">
             <AppBar position={'static'}>
-                <Typography variant={"h3"}>
+                <Typography variant={"h3"}
+                            align={'center'}
+                            color={'initial'}>
                     Covid-19 in Estonia
                 </Typography>
             </AppBar>
             <header className="App-header">
-                {/*<img src={logo} className="App-logo" alt="logo"/>*/}
+                <img src={logo} className="App-logo" alt="logo"/>
                 <Button
                     className={classes.buttonStyles}
                     variant='outlined'
@@ -87,14 +81,28 @@ function App() {
                 <Typography
                     align={'left'}
                     color={'primary'}
-                    className={classes.textStyle}
-                >
-                    <ListItem>New deaths in last 24h: {deaths && deaths.new} persons </ListItem>
-                    <ListItem>Total deaths: {deaths && deaths.total} persons </ListItem>
-                    <ListItem>New cases in last 24h: {cases && cases.new} persons </ListItem>
-                    <ListItem>Active cases: {cases && cases.active} persons </ListItem>
-                    <ListItem>Cases per 1M capita: {cases && cases.['1M_pop']} persons</ListItem>
-                    <ListItem> Statistics for: {day} </ListItem>
+                    className={classes.textStyle}>
+                    <Card className={classes.cardStyle}>
+                        <CardContent>New deaths in last 24h: {deaths && deaths.new} persons </CardContent>
+                    </Card>
+                    <Card className={classes.cardStyle}>
+                        <CardContent>Total deaths: {deaths && deaths.total} persons </CardContent>
+                    </Card>
+                    <Card className={classes.cardStyle}>
+                        <CardContent>New cases in last 24h: {cases && cases.new} persons </CardContent>
+                    </Card>
+                    <Card className={classes.cardStyle}>
+                        <CardContent>Critical cases: {cases && cases.critical} </CardContent>
+                    </Card>
+                    <Card className={classes.cardStyle}>
+                        <CardContent>Active cases: {cases && cases.active} </CardContent>
+                    </Card>
+                    <Card className={classes.cardStyle}>
+                        <CardContent>Cases per 1M persons: {cases && cases.['1M_pop']} </CardContent>
+                    </Card>
+                    <Card className={classes.cardStyle}>
+                        <CardContent> Statistics for: {day} </CardContent>
+                    </Card>
                 </Typography>
             </header>
         </div>
