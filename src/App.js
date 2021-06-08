@@ -2,19 +2,22 @@ import './App.css';
 import React, {useCallback, useState} from "react";
 import axios from "axios";
 import {
-    Button, Card, CardContent,
-    Typography
+    Button, Card, CardContent, Typography, TextField, MenuItem
 } from "@material-ui/core";
 import {makeStyles} from "@material-ui/core";
 import {AppBar} from "@material-ui/core";
-import logo from './Est.jpg'
+import logo from './Est.jpg';
+import {getCountry} from './countries';
 
+// here is Material UI styles for different thing (text, button and card)
 const useStyles = makeStyles({
     textStyle: {
         fontStyle: '-moz-initial',
-        color: 'black',
+        color: 'inherit',
         fontSize: 'large',
-        fontFamily: 'monospace',
+        fontFamily: 'sans-serif',
+        fontVariant: 'all-petite-caps',
+
     },
     buttonStyles: {
         color: 'white',
@@ -23,8 +26,9 @@ const useStyles = makeStyles({
     },
     cardStyle: {
         background: 'aqua',
-        border: 'black',
-        borderStyle: 'ridge'
+        border: 'red',
+        borderStyle: 'double',
+
     }
 });
 
@@ -34,18 +38,23 @@ function App() {
     const [cases, setCases] = useState('');
     const [deaths, setDeaths] = useState('');
     const [day, setDay] = useState('');
+    const [countryInput, setCountryInput] = useState('');
+    const countries = getCountry();
     const options = {
         method: 'GET',
         url: 'https://covid-193.p.rapidapi.com/statistics',
-        params: {country: 'estonia'},
+        params: {country: countryInput},
         headers: {
             'x-rapidapi-key': '457a49cbd2msh587809b267ee184p1965ffjsn4b06828b27cb',
             'x-rapidapi-host': 'covid-193.p.rapidapi.com'
         },
     };
+    // here is the method that calls the API for Covid data.
+    // I used 'useCallback' like my example, but it's like 'useEffect'.
+    // useCallback loads a memoized response and every value referenced inside the callback
+    // should also appear in the dependencies array
     const fetchData = useCallback(() => {
         axios(options)
-
             .then((response) => {
                 console.log(response);
                 setResponseData(response.data.response[0]);
@@ -56,9 +65,9 @@ function App() {
             .catch((error) => {
                 console.log(error)
             })
-    }, [options])
+    }, [options],)
     console.log(responseData);
-
+    console.log(countryInput);
     return (
         <div className="App">
             <AppBar position={'static'}>
@@ -70,6 +79,35 @@ function App() {
             </AppBar>
             <header className="App-header">
                 <img src={logo} className="App-logo" alt="logo"/>
+                {/*<TextField fullWidth*/}
+                {/*           id="country"*/}
+                {/*           label="choose country"*/}
+                {/*           variant="outlined"*/}
+                {/*           value={countryInput}*/}
+                {/*           InputLabelProps={{*/}
+                {/*               shrink: true,*/}
+                {/*           }}*/}
+                {/*           onChange={e => setCountryInput(e.target.value)}*/}
+                {/*/>*/}
+                <TextField
+                    id="country"
+                    label="Choose country"
+                    variant="outlined"
+                    select
+                    required
+                    fullWidth
+                    value={countryInput}
+                    InputLabelProps={{
+                        shrink: true,
+                    }}
+                    onChange={e => setCountryInput(e.target.value)}
+                >
+                    {countries.map((option, index) => (
+                        <MenuItem key={index} value={option.value}>
+                            {option.label}
+                        </MenuItem>
+                    ))}
+                </TextField>
                 <Button
                     className={classes.buttonStyles}
                     variant='outlined'
@@ -79,17 +117,20 @@ function App() {
                 </Button>
 
                 <Typography
-                    align={'left'}
+                    align={'inherit'}
+                    className={classes.textStyle}
                     color={'primary'}
-                    className={classes.textStyle}>
+                    display={'block'}
+                >
+
                     <Card className={classes.cardStyle}>
-                        <CardContent>New deaths in last 24h: {deaths && deaths.new} persons </CardContent>
+                        <CardContent>Deaths in last 24h: {deaths && deaths.new}  </CardContent>
                     </Card>
                     <Card className={classes.cardStyle}>
-                        <CardContent>Total deaths: {deaths && deaths.total} persons </CardContent>
+                        <CardContent>Total deaths: {deaths && deaths.total}  </CardContent>
                     </Card>
                     <Card className={classes.cardStyle}>
-                        <CardContent>New cases in last 24h: {cases && cases.new} persons </CardContent>
+                        <CardContent>New cases in last 24h: {cases && cases.new}  </CardContent>
                     </Card>
                     <Card className={classes.cardStyle}>
                         <CardContent>Critical cases: {cases && cases.critical} </CardContent>
