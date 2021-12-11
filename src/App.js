@@ -138,9 +138,9 @@ function App() {
                     <Card className={classes.cardStyle}>
                         <CardContent>Active cases: {cases && cases.active} </CardContent>
                     </Card>
-                    <Card className={classes.cardStyle}>
+                    {/* <Card className={classes.cardStyle}>
                         <CardContent>Cases per 1M persons: {cases && cases.['1M_pop']} </CardContent>
-                    </Card>
+                    </Card> */}
                     <Card className={classes.cardStyle}>
                         <CardContent> Statistics for: {day} </CardContent>
                     </Card>
