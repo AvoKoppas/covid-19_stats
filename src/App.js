@@ -40,14 +40,22 @@ function App() {
     const [day, setDay] = useState('');
     const [countryInput, setCountryInput] = useState('');
     const countries = getCountry();
+    // const options = {
+    //     method: 'GET',
+    //     url: 'https://covid-193.p.rapidapi.com/statistics',
+    //     params: {country: countryInput},
+    //     headers: {
+    //         'x-rapidapi-key': '457a49cbd2msh587809b267ee184p1965ffjsn4b06828b27cb',
+    //         'x-rapidapi-host': 'covid-193.p.rapidapi.com'
+    //     },
     const options = {
         method: 'GET',
-        url: 'https://covid-193.p.rapidapi.com/statistics',
-        params: {country: countryInput},
-        headers: {
-            'x-rapidapi-key': '457a49cbd2msh587809b267ee184p1965ffjsn4b06828b27cb',
-            'x-rapidapi-host': 'covid-193.p.rapidapi.com'
-        },
+        url: "https://9828e0a8-b8a5-486e-a69d-5f39e130328f.mock.pstmn.io",
+        // params: {country: countryInput},
+        // headers: {
+        //     'x-rapidapi-key': '457a49cbd2msh587809b267ee184p1965ffjsn4b06828b27cb',
+        //     'x-rapidapi-host': 'covid-193.p.rapidapi.com'
+        // },
     };
     // here is the method that calls the API for Covid data.
     // I used 'useCallback' like my example, but it's like 'useEffect'.
@@ -67,7 +75,6 @@ function App() {
             })
     }, [options],)
     console.log(responseData);
-    console.log(countryInput);
     return (
         <div className="App">
             <AppBar position={'static'}>
